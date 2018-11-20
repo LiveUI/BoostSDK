@@ -14,3 +14,8 @@
 * Download [Android Studio](https://developer.android.com/studio/)
 * **File**->**New**->**Import Project...**
 * Select root folder of your newly clonned repository
+
+## Build
+
+Run either `./gradlew assemble` in the IDE terminal or in **Gradle** menu select the type of build you'd like to perform (see below screenshot)
+

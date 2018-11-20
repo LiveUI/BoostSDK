@@ -2,6 +2,8 @@
 
 ## Install for developement
 
+> Please use IntelliJ IDEA IDE before the Android Studio is fully configured
+
 * Clone repo `git clone git@github.com:LiveUI/BoostSDK.git`
 
 #### JetBrains IntelliJ
@@ -9,7 +11,7 @@
 * Download [IntelliJ IDEA](https://www.jetbrains.com/idea/download/#section=mac)
 * Open or import root as project
 
-#### Android Studio
+#### Android Studio (not yet working)
 
 * Download [Android Studio](https://developer.android.com/studio/)
 * **File**->**New**->**Import Project...**

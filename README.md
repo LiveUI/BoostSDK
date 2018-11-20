@@ -19,3 +19,4 @@
 
 Run either `./gradlew assemble` in the IDE terminal or in **Gradle** menu select the type of build you'd like to perform (see below screenshot)
 
+![Gradle menu](https://github.com/LiveUI/BoostSDK/raw/master/Other/Images/build.png)

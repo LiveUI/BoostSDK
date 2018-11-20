@@ -12,5 +12,5 @@
 #### Android Studio
 
 * Download [Android Studio](https://developer.android.com/studio/)
-* **File**->**New**->**Import Project...***
+* **File**->**New**->**Import Project...**
 * Select root folder of your newly clonned repository

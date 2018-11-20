@@ -1,0 +1,4 @@
+enableFeaturePreview('GRADLE_METADATA')
+
+rootProject.name = 'Multiplatform-Boost-Network'
+include 'multiplatform-boost-network'

@@ -1,24 +1,25 @@
 package io.boost.network.api
 
+import io.boost.network.ApplicationDispatcher
 import io.boost.network.Config
 import io.boost.network.Session
 import io.boost.network.interceptor.JwtAuth
 import io.boost.network.model.*
-import io.boost.network.util.delete
-import io.boost.network.util.get
-import io.boost.network.util.post
-import io.boost.network.util.put
+import io.boost.network.util.*
 import io.ktor.client.HttpClient
 import io.ktor.client.features.json.JsonFeature
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
-class ApiRepositoryImpl : ApiRepository {
+internal class ApiRepositoryImpl(var config: Config) : ApiRepository {
 
-    val config = Config
-    val networkSession = Session
+    private val networkSession = Session
 
     private val client = HttpClient {
         expectSuccess = false
-        install(JsonFeature)
+        install(JsonFeature) {
+            serializer = KSerializer.serializer
+        }
         install(JwtAuth) {
             session = networkSession
         }
@@ -29,7 +30,7 @@ class ApiRepositoryImpl : ApiRepository {
     override suspend fun filter(
         url: String,
         filter: Filter
-    ): Response<MutableList<App>> {
+    ): Response<List<App>> {
         return client.get(
             url = url,
             endpoint = ApiEndpoint.APPS,
@@ -55,7 +56,7 @@ class ApiRepositoryImpl : ApiRepository {
 
     }
 
-    override suspend fun getApps(url: String): Response<MutableList<App>> {
+    override suspend fun getApps(url: String): Response<List<App>> {
         return client.get(
             url = url,
             endpoint = ApiEndpoint.APPS
@@ -87,21 +88,21 @@ class ApiRepositoryImpl : ApiRepository {
         )
     }
 
-    override suspend fun appsOverview(url: String): Response<MutableList<AppOverview>> {
+    override suspend fun appsOverview(url: String): Response<List<AppOverview>> {
         return client.get(
             url = url,
             endpoint = ApiEndpoint.APPS_OVERVIEW
         )
     }
 
-    override suspend fun getUploadTokensForUser(url: String): Response<MutableList<User>> {
+    override suspend fun getUploadTokensForUser(url: String): Response<List<User>> {
         return client.get(
             url = url,
             endpoint = ApiEndpoint.KEYS
         )
     }
 
-    override suspend fun getUploadKey(url: String, id: String): Response<MutableList<User>> {
+    override suspend fun getUploadKey(url: String, id: String): Response<List<User>> {
         return client.get(
             url = url,
             endpoint = ApiEndpoint.KEYS_ID,
@@ -109,7 +110,7 @@ class ApiRepositoryImpl : ApiRepository {
         )
     }
 
-    override suspend fun updateUploadKey(url: String, id: String): Response<MutableList<User>> {
+    override suspend fun updateUploadKey(url: String, id: String): Response<List<User>> {
         return client.post(
             url = url,
             endpoint = ApiEndpoint.KEYS_ID,
@@ -117,7 +118,7 @@ class ApiRepositoryImpl : ApiRepository {
         )
     }
 
-    override suspend fun deleteUploadKey(url: String, id: String): Response<MutableList<User>> {
+    override suspend fun deleteUploadKey(url: String, id: String): Response<List<User>> {
         return client.delete(
             url = url,
             endpoint = ApiEndpoint.KEYS_ID,
@@ -125,7 +126,7 @@ class ApiRepositoryImpl : ApiRepository {
         )
     }
 
-    override suspend fun getTeams(url: String): Response<MutableList<Team>> {
+    override suspend fun getTeams(url: String): Response<List<Team>> {
         return client.get(
             url = url,
             endpoint = ApiEndpoint.TEAMS
@@ -165,7 +166,7 @@ class ApiRepositoryImpl : ApiRepository {
         )
     }
 
-    override suspend fun getTeamUsers(url: String, teamId: String): Response<MutableList<User>> {
+    override suspend fun getTeamUsers(url: String, teamId: String): Response<List<User>> {
         return client.get(
             url = url,
             endpoint = ApiEndpoint.TEAMS_TEAMID_USERS,
@@ -191,7 +192,7 @@ class ApiRepositoryImpl : ApiRepository {
         )
     }
 
-    override suspend fun getUploadTokensForTeam(url: String, teamId: String): Response<MutableList<Team>> {
+    override suspend fun getUploadTokensForTeam(url: String, teamId: String): Response<List<Team>> {
         return client.get(
             url = url,
             endpoint = ApiEndpoint.TEAMS_TEAMID_KEYS,
@@ -208,7 +209,7 @@ class ApiRepositoryImpl : ApiRepository {
         )
     }
 
-    override suspend fun teamAppsOverview(url: String, teamId: String): Response<MutableList<AppOverview>> {
+    override suspend fun teamAppsOverview(url: String, teamId: String): Response<List<AppOverview>> {
         return client.get(
             url = url,
             endpoint = ApiEndpoint.TEAMS_TEAMID_APPS_OVERVIEW,
@@ -224,7 +225,7 @@ class ApiRepositoryImpl : ApiRepository {
         )
     }
 
-    override suspend fun getSettings(url: String): Response<MutableList<Settings>> {
+    override suspend fun getSettings(url: String): Response<List<Settings>> {
         return client.get(
             url = url,
             endpoint = ApiEndpoint.SETTINGS
@@ -247,14 +248,14 @@ class ApiRepositoryImpl : ApiRepository {
         )
     }
 
-    override suspend fun getUsers(url: String): Response<MutableList<User>> {
+    override suspend fun getUsers(url: String): Response<List<User>> {
         return client.get(
             url = url,
             endpoint = ApiEndpoint.USERS
         )
     }
 
-    override suspend fun getUsersGlobal(url: String): Response<MutableList<User>> {
+    override suspend fun getUsersGlobal(url: String): Response<List<User>> {
         return client.get(
             url = url,
             endpoint = ApiEndpoint.USERS_GLOBAL

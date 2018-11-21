@@ -1,5 +1,5 @@
 package io.boost.network
 
-object Config {
+class Config {
     var url = ""
 }

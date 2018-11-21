@@ -1,5 +1,6 @@
 package io.boost.network.model
 
+import kotlinx.serialization.Optional
 import kotlinx.serialization.Serializable
 
 /**
@@ -20,7 +21,7 @@ import kotlinx.serialization.Serializable
 }
  */
 @Serializable
-data class AuthResponse(val id: String,
-                        val token: String,
-                        val expires: String,
-                        val user: User)
+data class AuthResponse(@Optional val id: String? = null,
+                        @Optional val token: String? = null,
+                        @Optional val expires: String? = null,
+                        @Optional val user: User? = null)

@@ -4,7 +4,6 @@ import io.boost.network.model.Error
 import io.boost.network.model.Response
 import io.ktor.client.HttpClient
 import io.ktor.client.call.typeInfo
-import io.ktor.client.features.json.defaultSerializer
 import io.ktor.client.request.*
 import io.ktor.client.response.HttpResponse
 import io.ktor.http.ContentType
@@ -46,7 +45,7 @@ suspend inline fun <reified T> processResponse(
 
     return if (responseCode == OK) {
         try {
-            val data = defaultSerializer().read(typeInfo<T>(), result) as? T
+            val data = KSerializer.serializer.read(typeInfo<T>(), result) as? T
             Response(
                 result = data,
                 headers = headers,
@@ -64,7 +63,7 @@ suspend inline fun <reified T> processResponse(
             Response<T>(
                 headers = headers,
                 responseCode = responseCode.value,
-                error = defaultSerializer().read(typeInfo<Error>(), result) as? Error
+                error = KSerializer.serializer.read(typeInfo<Error>(), result) as? Error
             )
         } catch (e: Exception) {
             Response<T>(
@@ -111,6 +110,16 @@ suspend inline fun <reified T> HttpClient.post(
             body = it
         }
     }
+//    val response = post<T> {
+//        url {
+//            takeFrom(url)
+//            encodedPath = endpoint
+//        }
+//        contentType(ContentType.Application.Json)
+//        requestBody?.let {
+//            body = requestBody
+//        }
+//    }
 
     return processResponse(response)
 }

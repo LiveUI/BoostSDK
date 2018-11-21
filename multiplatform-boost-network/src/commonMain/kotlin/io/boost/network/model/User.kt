@@ -1,5 +1,6 @@
 package io.boost.network.model
 
+import kotlinx.serialization.Optional
 import kotlinx.serialization.Serializable
 
 /**
@@ -14,13 +15,13 @@ import kotlinx.serialization.Serializable
  * }
  */
 @Serializable
-data class User(
-    val id: String,
-    val username: String,
-    val firstname: String,
-    val lastname: String,
-    val registered: String,
-    val avatar: String?,
-    val email: String?,
-    val su: Boolean,
-    val disabled: Boolean)
+class User(
+    @Optional val id: String? = null,
+    @Optional val username: String? = null,
+    @Optional val firstname: String? = null,
+    @Optional val lastname: String? = null,
+    @Optional val registered: String? = null,
+    @Optional val avatar: String? = null,
+    @Optional val email: String? = null,
+    @Optional val su: Boolean? = null,
+    @Optional val disabled: Boolean? = null)
